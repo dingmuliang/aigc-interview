@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI+TA 面试记录</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#e8e8ec;--card:#e8e8ec;--text:#2d3436;--dim:#636e72;--accent:#6c63ff;--accent2:#e17055;--shadow-l:rgba(255,255,255,.8);--shadow-d:rgba(163,177,198,.5);--radius:16px;--font:"Inter","Noto Sans SC","PingFang SC",Arial,sans-serif;--mono:"JetBrains Mono",Menlo,monospace}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.75;padding-bottom:42px}
+header{text-align:center;padding:38px 18px 24px}
+h1{font-size:30px}
+h1 span{color:var(--accent)}
+header p{font-size:14px;color:var(--dim);margin-top:6px}
+.stats{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap}
+.stats span{padding:8px 18px;border-radius:50px;background:var(--card);box-shadow:-4px -4px 10px var(--shadow-l),4px 4px 10px var(--shadow-d);font-size:13px;color:var(--dim)}
+.stats b{color:var(--accent)}
+.search{max-width:700px;margin:0 auto 16px;padding:0 16px}
+.search input{width:100%;border:0;outline:0;border-radius:50px;padding:14px 20px;background:var(--card);box-shadow:inset -3px -3px 6px var(--shadow-l),inset 3px 3px 6px var(--shadow-d);font-size:15px;color:var(--text)}
+.tabs{max-width:700px;margin:0 auto 12px;padding:0 16px}
+.tabs-inner{display:flex;gap:8px;padding:6px;border-radius:50px;background:var(--card);box-shadow:-3px -3px 6px var(--shadow-l),3px 3px 6px var(--shadow-d);flex-wrap:wrap}
+button{font-family:var(--font)}
+.tabs button{flex:1;border:0;border-radius:40px;background:transparent;padding:8px 10px;color:var(--dim);cursor:pointer;font-weight:500}
+.tabs button.active{color:var(--accent);box-shadow:inset -3px -3px 6px var(--shadow-l),inset 3px 3px 6px var(--shadow-d);font-weight:700}
+.info{max-width:700px;margin:0 auto 8px;padding:0 16px;color:var(--dim);font-size:13px}
+main{max-width:700px;margin:0 auto;padding:0 16px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:-5px -5px 12px var(--shadow-l),5px 5px 12px var(--shadow-d);margin-bottom:14px;padding:18px 22px;cursor:pointer;transition:.18s}
+.card:hover{transform:translateY(-1px);box-shadow:-6px -6px 14px var(--shadow-l),6px 6px 14px var(--shadow-d)}
+.row{display:flex;align-items:flex-start;gap:14px}
+.num{flex:0 0 32px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent);box-shadow:-2px -2px 4px var(--shadow-l),2px 2px 4px var(--shadow-d);font-weight:700;font-size:13px}
+.card h3{flex:1;font-size:15px;font-weight:500;padding-top:2px}
+.stars{font-size:11px;color:#f1c40f;min-width:54px;text-align:right;white-space:nowrap;padding-top:4px}
+.arrow{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--dim);box-shadow:-2px -2px 4px var(--shadow-l),2px 2px 4px var(--shadow-d);font-size:14px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.24);display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);z-index:10}
+.modal.open{display:flex}
+.dialog{max-width:900px;width:100%;max-height:86vh;overflow:auto;border-radius:24px;padding:32px 36px;background:rgba(255,255,255,.58);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.35);box-shadow:0 8px 40px rgba(0,0,0,.08);position:relative}
+.close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:0;border-radius:50%;background:rgba(255,255,255,.34);cursor:pointer;color:var(--dim);font-size:18px}
+.q{font-size:18px;font-weight:700;margin-bottom:12px;line-height:1.6}
+.tag{display:inline-block;border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700;margin-bottom:18px}
+.tag.mem{background:rgba(9,132,227,.1);color:#0984e3}.tag.agent{background:rgba(108,92,231,.1);color:#6c5ce7}.tag.ta{background:rgba(0,184,148,.1);color:#00b894}.tag.case{background:rgba(225,112,85,.1);color:#e17055}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.answer,.thinking{font-size:14px;line-height:1.9}
+.answer p,.thinking p{margin-bottom:12px}
+.answer ul,.thinking ul{padding-left:20px;margin-bottom:12px}
+.answer li,.thinking li{margin-bottom:5px}
+b,strong{color:#5b4de0}
+code{font-family:var(--mono);font-size:13px;background:rgba(91,77,224,.1);padding:1px 6px;border-radius:5px;color:#4a3fbf}
+pre{white-space:pre-wrap;background:rgba(255,255,255,.42);border-radius:10px;padding:12px 14px;overflow:auto;margin:8px 0;border:1px solid rgba(255,255,255,.24)}
+.label{font-size:12px;font-weight:800;letter-spacing:.04em;color:var(--accent2);margin-bottom:10px;display:block}
+.line{border:0;border-top:2px solid var(--accent2);opacity:.2;margin-bottom:12px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.dialog{padding:24px 20px}.tabs-inner{border-radius:12px}.tabs button{flex:1 0 42%}.stars{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>AI+TA <span>面试记录</span></h1>
+  <p>上下文管理 · 记忆知识库 · Skill/MCP · 技术美术落地</p>
+  <div class="stats"><span>共 <b id="total">27</b> 题</span><span><b>4</b> 个分类</span></div>
+</header>
+<div class="search"><input id="search" type="search" placeholder="搜索题目关键词..." autocomplete="off"></div>
+<div class="tabs"><div class="tabs-inner">
+  <button class="active" data-cat="all">全部</button>
+  <button data-cat="mem">记忆</button>
+  <button data-cat="agent">Agent</button>
+  <button data-cat="ta">AI+TA</button>
+  <button data-cat="case">实战</button>
+</div></div>
+<div class="info" id="info"></div>
+<main id="list"></main>
+<div class="modal" id="modal"><div class="dialog">
+  <button class="close" onclick="closeModal()">×</button>
+  <div class="q" id="modalQ"></div>
+  <span class="tag" id="modalTag"></span>
+  <div class="grid">
+    <div class="answer" id="modalA"></div>
+    <div><span class="label">▸ 思路 · 为什么这样答</span><hr class="line"><div class="thinking" id="modalT"></div></div>
+  </div>
+</div></div>
+<script>
+const D=[
+{c:"mem",n:1,s:4,q:"上下文管理是怎么做的？如何进行记忆和记忆管理？",a:`<p>我会把上下文管理分成三层：<b>短期上下文、长期记忆、记忆治理</b>。</p><p><b>短期上下文</b>负责当前会话窗口里的任务目标、关键约束、最近决策和工具结果。因为窗口有限，所以要压缩无关内容，保留会影响当前任务判断的信息。</p><p><b>长期记忆</b>不是保存聊天原文，而是抽取稳定、未来可复用的信息，比如用户偏好、项目背景、技术栈、业务规则和长期约束。</p><p><b>记忆治理</b>负责新增、更新、冲突解决、删除和安全边界。当前会话和用户最新指令优先；敏感信息默认不记；用户要求删除时必须停止使用或清理。</p><p>总结：上下文管理解决“当前该看什么”，记忆解决“未来该记得什么”，记忆管理解决“什么该记、怎么用、何时忘”。</p>`,t:`<p>这题考察的是你是否理解 LLM 不是无限记忆，而是要做信息筛选和生命周期管理。</p><p>回答时要避免说“把历史都放进 prompt”，那会暴露工程意识不足。重点说清：短期靠上下文窗口，长期靠结构化记忆，使用时按任务检索召回。</p>`},
+{c:"mem",n:2,s:4,q:"记忆沉淀怎么沉淀到知识库中？",a:`<p>我不会把聊天记录原样塞进知识库，而是做成一条从对话到知识资产的流程。</p><ul><li><b>筛选：</b>只保留用户长期偏好、项目规则、业务背景、常见解法、重要决策等。</li><li><b>抽取：</b>把原始对话转成稳定事实和结构化字段。</li><li><b>归一化：</b>去重、合并、处理冲突，并加上作用域。</li><li><b>写入：</b>结构化信息进数据库，语义检索内容做 embedding 后进向量库。</li><li><b>使用：</b>后续根据当前任务检索相关记忆，而不是全量塞进上下文。</li><li><b>治理：</b>支持更新、失效、删除、权限和敏感信息过滤。</li></ul><pre>{
+  "type": "project_rule",
+  "scope": "payment_system",
+  "content": "支付回调必须保证幂等性",
+  "confidence": 0.9,
+  "updated_at": "2026-07-03"
+}</pre>`,t:`<p>面试官想听的是“知识工程”而不是“存数据”。</p><p>加分点是提到结构化库 + 向量库的组合：结构化库管元数据、权限、版本和作用域；向量库管语义召回。</p>`},
+{c:"mem",n:3,s:5,q:"提炼记忆摘要时，怎么评价什么叫值得记忆？",a:`<p>我会给模型一套准入标准，而不是让它凭感觉记。值得记忆的信息要满足：<b>未来可复用、相对稳定、能改变助手行为、安全、不是重复信息</b>。</p><p>值得记的包括：用户长期偏好、项目长期背景、稳定约束、业务规则、反复出现的工作习惯。</p><p>不值得记的包括：一次性任务状态、临时要求、聊天原文、敏感信息、不确定猜测。</p><pre>只有同时满足下面条件才沉淀：
+1. 以后还可能用得上
+2. 不是临时信息
+3. 能影响未来行为
+4. 不包含敏感隐私
+5. 不是重复记忆</pre><p>比如“以后面试题用中文、按点回答”值得记；“这道题回答简单点”通常只放在当前上下文里。</p>`,t:`<p>这题的关键是区分“摘要”和“记忆”。摘要是当前任务继续用，记忆是未来任务还会影响行为。</p><p>可以用一句话收尾：如果未来被召回后能让助手少问问题、答得更贴合用户、避免重复犯错，它才值得记。</p>`},
+{c:"agent",n:4,s:4,q:"Skill 是怎么写的？",a:`<p>Skill 可以理解成给 Agent 的一份可复用操作说明书。它不是普通 prompt，而是把某类任务的触发条件、流程、工具约束、输出规范和质量检查沉淀下来。</p><pre># Asset Review Skill
+## When to use
+用户要求检查模型、贴图、材质、LOD 或资产入库质量时使用。
+
+## Workflow
+1. 查询项目规范
+2. 读取资产 metadata
+3. 跑模型、UV、材质、贴图检查
+4. 区分 blocker、warning、info
+5. 输出问题、依据、修复建议
+
+## Safety
+不直接修改源资产，除非用户确认。</pre><p>好的 Skill 要明确、可执行、可验证，并且要写清楚边界和降级方式。</p>`,t:`<p>面试官想知道你是否能把经验变成流程。不要只说“写 prompt”，要强调它是标准操作规程。</p><p>Skill 的价值在于复用团队经验，让 Agent 每次处理同类任务都按同一套标准执行。</p>`},
+{c:"agent",n:5,s:4,q:"如何调用 Skill？",a:`<p>调用 Skill 分两步：<b>触发和执行</b>。</p><p>触发层根据用户意图或任务类型匹配 Skill，比如 Excel 分析、代码审查、记忆提炼、资产质检等。也可以由用户显式指定。</p><p>执行层会加载 Skill 的说明，按照里面的 workflow、工具约束、输出格式和质量检查去完成任务。</p><pre>用户请求
+  ↓
+识别任务类型
+  ↓
+匹配 Skill description
+  ↓
+读取 SKILL.md
+  ↓
+按流程调用工具和生成结果
+  ↓
+输出可验证结果</pre><p>如果是记忆提炼，Skill 会要求模型判断哪些值得记、是否敏感、是否重复，再输出结构化候选记忆。</p>`,t:`<p>回答重点是：Skill 不是插件按钮，而是 Agent 执行任务时加载的一套上下文规则。</p><p>可以补一句：真正生产里，Skill 提取出的结果还要经过安全过滤、去重和必要的人审。</p>`},
+{c:"agent",n:6,s:4,q:"MCP 是什么？",a:`<p>MCP 是 <b>Model Context Protocol</b>，模型上下文协议。它是一套标准协议，用来让大模型或 Agent 安全、标准化地连接外部工具和数据源。</p><p>可以把它理解成给大模型用的 USB 接口标准。不同工具只要实现 MCP Server，就可以被支持 MCP 的 Host 调用。</p><ul><li><b>Host：</b>运行模型应用的地方。</li><li><b>Client：</b>Host 里负责通信的客户端。</li><li><b>Server：</b>暴露工具、资源和提示模板的一方。</li></ul><p>MCP Server 可以暴露 Tools、Resources 和 Prompts。它解决的是工具接入标准化、上下文动态获取和权限边界清晰的问题。</p>`,t:`<p>这题不要答成某个具体工具。MCP 是协议层概念。</p><p>最好用“USB 接口标准”类比，再展开 Tools、Resources、Prompts 三类能力。</p>`},
+{c:"agent",n:7,s:4,q:"MCP 如何创建？",a:`<p>创建 MCP 的本质是写一个 MCP Server，把外部系统包装成模型能调用的工具、资源或 Prompt。</p><ul><li>先确定要暴露什么能力，比如搜索知识库、读取资产规范、执行只读查询。</li><li>选择 SDK，比如 TypeScript 或 Python。</li><li>注册工具，定义参数 schema 和返回格式。</li><li>通过 stdio 或 HTTP 等传输方式启动 Server。</li><li>在 Host 里配置 command 和 args，让 Host 能拉起它。</li><li>最后做好权限、参数校验、审计日志和敏感信息脱敏。</li></ul><p>面试里可以总结为：定义能力 + SDK 注册 + Host 配置 + 安全边界。</p>`,t:`<p>加分点是安全意识。MCP 很容易让模型调用外部系统，所以工具权限和参数校验一定要讲。</p><p>比如数据库 MCP 最好只暴露只读查询，不能给模型任意执行破坏性 SQL。</p>`},
+{c:"ta",n:8,s:3,q:"TA 是什么职位？",a:`<p>这里的 TA 是 <b>Technical Artist，技术美术</b>。它是连接美术和程序的桥梁岗位。</p><p>核心职责是用技术手段提升美术生产效率、保证美术效果能在引擎里稳定落地，并控制性能成本。</p><ul><li>开发 Maya / Blender / Houdini / Substance / Unreal / Unity 工具。</li><li>制定和检查资产规范，比如面数、贴图、材质、LOD、骨骼数量。</li><li>处理 Shader、材质、角色、毛发、布料、特效等效果落地。</li><li>做引擎导入、性能优化、显存和 DrawCall 控制。</li><li>翻译美术需求和程序实现成本。</li></ul>`,t:`<p>如果面试官纠正 TA 含义，一定要快速对齐上下文。这里不是招聘里的 Talent Acquisition，而是技术美术。</p><p>回答时突出桥梁属性：懂美术生产，也懂引擎和技术实现。</p>`},
+{c:"ta",n:9,s:5,q:"你怎么看 AI+TA 这个岗位？",a:`<p>我认为 AI+TA 不是用 AI 替代美术，而是让 TA 把 AI 变成可控、可复用、能进生产管线的工具链。</p><p>它的产出不应该只是几张 AI 图，而应该是提效工具、资产管线、质量检查系统、风格控制方案和引擎落地能力。</p><p>AI 可以提高概念初稿、材质生成、资产变体、绑定动画辅助和质检解释效率；TA 负责把这些能力接入 DCC、引擎和资产平台，确保输出符合项目规范。</p><p>一句话总结：AI 负责提高初稿和变体效率，TA 负责让结果稳定、合规、能进引擎。</p>`,t:`<p>这题考察岗位理解。不要把 AI+TA 讲成“会用 AI 工具的美术”。</p><p>最好强调工业化价值：流程、规范、质量、效率和落地，而不是单点炫技。</p>`},
+{c:"ta",n:10,s:5,q:"AI 如何结合 TA 做出产出？",a:`<p>我会从五个方向做产出。</p><ul><li><b>AI 辅助资产生产：</b>概念图、材质贴图、低模/高模参考、道具和场景变体。</li><li><b>AI 辅助资产检查：</b>命名、面数、UV、贴图、材质、LOD、骨骼、法线等自动检查。</li><li><b>AI 辅助材质和 Shader：</b>根据描述生成材质参数、贴图通道建议或 Material Instance。</li><li><b>AI 辅助绑定动画：</b>骨骼识别、权重初稿、动作重定向、异常检测。</li><li><b>AI 辅助风格统一：</b>训练风格模型、建立风格库、做一致性评分和审核。</li></ul><p>好的产出必须接入现有流程、可控、可验证，并且解决真实痛点。</p>`,t:`<p>回答时要从“工具产出”而不是“作品产出”展开。</p><p>TA 的价值是把 AI 包装成团队能长期使用的生产能力，而不是一次性 demo。</p>`},
+{c:"ta",n:11,s:5,q:"AI+TA 要接入现有生产流程，应该怎么接？Skill、MCP 还是其他方式？",a:`<p>我会分三层接入：<b>工作入口层、能力服务层、数据资产层</b>。</p><p><b>工作入口层：</b>接到美术每天用的工具里，比如 Maya / Blender 插件、Unreal / Unity Editor 工具、资产管理平台入口。</p><p><b>能力服务层：</b>把资产检查、贴图分析、风格检查、引擎验证等做成后端 API。MCP 更适合给 Agent 调工具和取上下文，Skill 用来定义“先查规范、再跑检查、再生成报告”的流程。</p><p><b>数据资产层：</b>接项目规范、资产库、历史返修、优秀案例和工具文档。</p><pre>DCC 插件 / 引擎插件 / 资产平台
+        ↓
+后端 API
+        ↓
+AI Agent 编排层
+        ↓
+Skill 定义流程
+        ↓
+MCP 调用工具和数据
+        ↓
+资产库 / 规范库 / 引擎验证 / 任务系统</pre>`,t:`<p>面试官想看你是否理解这些概念的边界。</p><p>Skill 定义怎么做，MCP 连接能调用什么，API/插件负责接入用户工作场景，知识库提供项目标准。</p>`},
+{c:"ta",n:12,s:5,q:"AI 3D 资产如何做到可控？市场上有哪些 AI 3D 建模产品，如何运用？",a:`<p>可控化要从输入、生成、后处理、验收四个环节控制。</p><ul><li><b>输入可控：</b>使用多视图、风格参考、资产类型、技术约束，而不是只靠一句 prompt。</li><li><b>参数可控：</b>固定模型版本、seed、采样器、步数、输出格式、贴图尺寸、目标面数。</li><li><b>后处理可控：</b>自动拓扑、减面、UV 检查、法线修复、命名、LOD、引擎导入验证。</li><li><b>验收可控：</b>用规则检查硬指标，用 AI 做解释、建议和风格辅助判断。</li></ul><p>市场工具方面，Meshy 适合 text/image to 3D、AI texturing 和道具初稿；Tripo AI 适合多视图转 3D 和 base mesh；Rodin/Hyper3D 适合高质量角色或道具初稿；Sloyd 适合参数化低模和批量变体；Luma 更适合概念探索和空间氛围参考。</p><p>我的用法是搭 AI 资产生成中台，统一入口、模板、API、质检、入库和数据沉淀，而不是让美术分散使用各种网站。</p>`,t:`<p>这题重点是“可控”不是 prompt 技巧，而是完整生产管线。</p><p>提产品时不要只列名字，要说清每个产品适合放在哪个环节：概念、base mesh、道具变体、风格探索还是生产前处理。</p>`},
+{c:"case",n:13,s:5,q:"从 0 到 1 做 AI+TA 资产质检工具，你会怎么设计？",a:`<p>我会先把目标定为：接入美术资产提交流程，在入库前发现问题，减少返工，提高资产通过率。</p><p>接入点优先选两个：DCC 端插件用于制作前自查，资产平台或引擎导入阶段用于入库前验收。</p><p>检查规则包括面数、材质数量、贴图尺寸、命名、UV、法线、pivot、单位、LOD、碰撞体、骨骼数量、权重等。硬指标由规则系统判断，不完全交给 AI。</p><p>AI 负责解释问题、给修复建议、生成辅助脚本和检索项目规范。结果分 Blocker、Warning、Info，AI 输出必须绑定规则依据或规范来源。</p><p>最后把检查结果、返修原因、最终通过情况沉淀回知识库，形成迭代闭环。</p>`,t:`<p>这题是典型落地题。回答结构最好按目标、接入点、检查项、AI 角色、可控验证、数据闭环展开。</p><p>核心观点：规则做硬判断，AI 做解释和辅助修复。</p>`},
+{c:"case",n:14,s:5,q:"AI+TA 工具上线后，美术反馈问题太多、不准、建议太泛，怎么优化？",a:`<p>我会先把问题拆成三类：规则问题、AI 问题和流程问题。</p><ul><li><b>规则问题：</b>阈值不合理，资产类型没有区分，导致误报。</li><li><b>AI 问题：</b>没有检索到项目规范，回答太通用，严重程度判断不准。</li><li><b>流程问题：</b>检查时机打断美术，报告太长，重点不清。</li></ul><p>优化上，我会把结果分级，默认突出 Blocker 和高价值 Warning，低价值 Info 收起。误报高的规则先降级或灰度。</p><p>修复建议要包含问题位置、规范依据、当前值、目标值、修复步骤和是否支持一键修复。</p><p>工具里要加“误报、忽略、已修复、规则不适用、建议不清楚”等反馈按钮，并记录资产类型、规则 ID、最终审核结果。</p><p>效果用数据衡量：首次提交通过率、返修次数、质检耗时、误报率、主动使用率、审核沟通成本。</p>`,t:`<p>这题考察产品化和运营意识。上线不是结束，生产工具一定要持续迭代。</p><p>一句话抓重点：让美术觉得它帮我少返工、少沟通、少踩坑，而不是多一个审核负担。</p>`},
+{c:"ta",n:15,s:5,q:"如果要保证 AI 生成资产的风格统一，你会怎么做？",a:`<p>我会把风格统一拆成三件事：<b>风格标准化、生成约束、结果评估</b>。</p><p><b>第一，先把项目风格变成可描述、可检索、可量化的规范。</b> 很多团队说“我们要梦幻西游风格”“我们要国风 Q 版”，但这只是感性描述。TA 要和主美一起拆成具体维度：角色头身比、轮廓夸张程度、配色饱和度、材质笔触、纹样语言、服装结构、武器比例、边缘线处理、光影强度、PBR 写实程度等。</p><p><b>第二，建立项目风格资产库。</b> 把已经通过审核的角色、道具、场景件、贴图、材质球、线框图、多视图参考都放进去，并打标签：资产类型、阵营、稀有度、材质、风格关键词、可参考部分、禁用部分。这样 AI 生成时不是凭空想象，而是有项目自己的风格上下文。</p><p><b>第三，用模型和模板控制输入。</b> 如果是 2D 概念阶段，可以训练或配置项目 LoRA、风格模型、IP-Adapter、ControlNet、多视图模板。美术不直接写自由 prompt，而是在工具里选择项目、资产类型、风格模板，再补充需求，例如“水系女法师”“低级木质宝箱”。</p><p><b>第四，生成后做风格评分。</b> 可以用图像 embedding 或多模态模型对生成结果和标准资产库做相似度比较，也可以让 AI 按项目风格维度打分，比如比例、色彩、材质、轮廓、纹样是否符合。分数低的不能直接进入 3D 阶段。</p><p><b>第五，人工审核不能省。</b> AI 可以做初筛和提示，但风格最终还是主美或资深美术拍板。TA 要把 AI 的判断变成“可解释的审核依据”，比如它为什么认为这个角色不符合项目风格，是比例偏写实、配色太暗，还是材质太现代。</p><p>总结来说，我不会只依赖 prompt，而是用项目风格库、模型模板、多视图约束、自动评分和人工审核形成闭环。</p>`,t:`<p>这题面试官想听的是“风格工程化”。只说训练一个模型是不够的，因为模型只能提高相似度，不能解决规范、审核和版本管理。</p><p>加分点是把抽象风格拆成维度，然后让这些维度进入生成模板和质检评分。</p>`},
+{c:"ta",n:16,s:5,q:"AI 生成 3D 角色时，为什么不能直接进游戏？你会怎么处理角色资产？",a:`<p>角色资产比道具和场景件复杂很多，所以 AI 生成的 3D 角色通常不能直接进游戏。原因主要有四类。</p><p><b>第一，拓扑不可控。</b> 游戏角色需要适合动画变形的拓扑环线，尤其是眼睛、嘴巴、肩膀、肘部、膝盖、手指这些变形区域。AI 生成模型经常出现三角面混乱、布线不符合肌肉运动、局部粘连或隐藏破面，静态看可以，动起来就会穿帮。</p><p><b>第二，UV 和材质不可控。</b> AI 生成的 UV 可能碎片太多、利用率低、重叠不合理，贴图也可能把阴影、细节、颜色混在一起，不符合项目 PBR 或手绘贴图规范。角色还涉及皮肤、头发、布料、金属、装饰物等材质分区，不能只看一张贴图是否漂亮。</p><p><b>第三，绑定和动画不可控。</b> 角色要接入项目骨架、动作库、表情系统、换装系统和技能表现。AI 生成模型通常没有标准骨骼、权重质量不可控，也不一定符合 A-pose / T-pose、骨骼命名和比例标准。</p><p><b>第四，风格和性能不可控。</b> 角色是玩家高频观察对象，轮廓、比例、面部风格、服装层次都要非常稳定。同时还要满足面数、骨骼数、材质球数量、贴图尺寸、Shader 复杂度和移动端性能限制。</p><p>我的处理方式是把 AI 角色分级使用：</p><ul><li><b>概念参考级：</b>只用于方向探索，帮助主美快速看比例、服装、配色。</li><li><b>建模辅助级：</b>作为 base mesh 或体块参考，建模师重新拓扑、重做 UV 和材质。</li><li><b>生产可用级：</b>必须通过拓扑、UV、材质、骨骼、权重、表情、动画和引擎性能检查。</li></ul><p>流程上，我会先用 AI 生成多视图角色图，再用 Meshy、Tripo、Rodin 等工具生成初始 3D，之后进入 TA 后处理：重拓扑、规范 UV、拆材质、统一骨架、绑定测试、动画预览、LOD、引擎导入验证。角色类资产绝不建议“一键生成直接入库”。</p>`,t:`<p>这题能区分你是不是真懂游戏资产。很多人只看静态模型效果，但游戏角色真正难的是动起来、换装、表情、性能和引擎兼容。</p><p>回答时要明确：道具可以更早尝试生产化，角色要更谨慎，通常先做概念或辅助建模。</p>`},
+{c:"case",n:17,s:5,q:"如果公司要做 AI 资产生成中台，你会怎么设计整体架构？",a:`<p>我会把 AI 资产生成中台设计成“统一入口 + 多模型能力 + 规范约束 + 自动质检 + 资产入库”的系统，而不是一个单独的生图网页。</p><p><b>入口层：</b>给美术、TA、主美提供统一入口，可以是 Web 平台，也可以嵌入 Maya / Blender / Unreal / Unity。用户选择项目、资产类型、用途、风格模板，上传参考图或多视图，然后提交生成任务。</p><p><b>任务编排层：</b>所有生成任务都走异步队列。因为图像生成、3D 生成、重拓扑、引擎验证都比较耗时，需要任务状态：pending、running、reviewing、passed、failed。这里可以用 FastAPI + Redis/Celery，或者公司内部任务系统。</p><p><b>模型能力层：</b>不要绑定单一模型，而是把 Krea、ComfyUI、Meshy、Tripo、Rodin、Sloyd、内部 LoRA、贴图生成模型都封装成可调用服务。系统根据资产类型选择合适模型：道具走 Meshy/Tripo，低模变体走 Sloyd，概念图走扩散模型，材质走贴图生成服务。</p><p><b>规范约束层：</b>接项目规范库，控制 prompt 模板、负面词、分辨率、seed、输出格式、贴图尺寸、目标面数、材质球数量和命名规则。不同项目、平台、资产类型使用不同规则。</p><p><b>自动质检层：</b>生成后自动跑检查：模型面数、UV、法线、贴图、材质、LOD、骨骼、pivot、单位、引擎导入、性能预算。AI 负责解释问题和给修复建议，规则引擎负责硬判断。</p><p><b>审核入库层：</b>通过质检后进入人工审核，主美看风格，TA 看技术标准。通过后进入资产库，并保存 prompt、seed、模型版本、参考图来源、质检报告和审核人。</p><pre>统一入口
+  ↓
+任务队列
+  ↓
+模型服务层：2D / 3D / 材质 / 修复
+  ↓
+规范约束层：项目规则 + 模板
+  ↓
+自动质检：规则 + AI
+  ↓
+人工审核
+  ↓
+资产库 + 生成记录 + 数据闭环</pre><p>这样设计的好处是可追溯、可扩展、可替换模型，也能把每次生产数据沉淀下来，后续优化模型选择和项目规范。</p>`,t:`<p>这题考察架构能力。不要只讲“调用 Meshy API”，要讲平台化、多模型、任务队列、规范库、质检、审核和入库。</p><p>面试官喜欢听到“模型可替换”。因为 AI 工具变化很快，架构不能绑死某一个供应商。</p>`},
+{c:"case",n:18,s:5,q:"AI+TA 项目怎么证明自己真的提效？你会看哪些指标？",a:`<p>我会从效率、质量、成本、采用率四个维度证明 AI+TA 的价值。只说“感觉快了”不够，必须有上线前后的数据对比。</p><p><b>效率指标：</b>看单个资产从需求到初稿的时间是否下降，概念探索数量是否上升，建模初稿周期是否缩短，质检等待时间是否减少。比如以前一个道具初稿 1 天，现在 AI 生成 10 个方向 + 人工筛选只要 2 小时，这就是明确提效。</p><p><b>质量指标：</b>看首次提交通过率、返修次数、Blocker 问题数量、引擎导入失败率、风格审核通过率。AI+TA 不只是快，还要减少低级错误。</p><p><b>成本指标：</b>看人力成本、外包成本、GPU/API 调用成本、重复沟通成本。不能只看 AI 调用费低，还要看后处理和返工成本。如果生成 100 个资产但 90 个不能用，实际成本可能更高。</p><p><b>采用率指标：</b>看有多少美术主动使用工具、使用频率、放弃率、反馈满意度、哪些功能被高频使用。如果工具只在演示时好看，生产中没人用，就不能算成功。</p><p><b>数据闭环指标：</b>看系统是否沉淀了有效数据，比如常见返修问题、规则命中率、误报率、自动修复成功率、AI 建议采纳率。</p><p>我会做 A/B 或试点对比。先选一个资产类型，比如低模道具或场景小件，拿传统流程和 AI+TA 流程对比 2 到 4 周，统计周期、通过率、返修次数和满意度。验证有效后再扩展到角色、场景、材质等更复杂类型。</p><p>最终我会用一句话汇报：这个工具让哪类资产的哪个环节节省了多少时间，返修率下降了多少，最终入库质量有没有提升。</p>`,t:`<p>这题考察你有没有业务结果意识。AI+TA 岗位不是做酷 demo，而是给生产团队交付可衡量的效率和质量提升。</p><p>最好主动提出“先试点再推广”，这比一上来全公司铺开更现实。</p>`},
+{c:"case",n:19,s:5,q:"AI 资产生成涉及版权和合规风险，你会怎么规避？",a:`<p>我会把版权合规放在流程设计里，而不是等资产要上线时才补救。AI 资产的风险主要来自训练数据、参考图、生成结果和使用记录四个方面。</p><p><b>训练数据风险：</b>如果要训练项目 LoRA 或风格模型，数据必须来自公司自有资产、授权素材、已签署授权协议的外包内容，或者明确可商用的数据。不能直接拿竞品截图、知名 IP、画师作品、影视角色去训练。</p><p><b>参考图风险：</b>工具上传参考图时要记录来源。可以在系统里要求用户选择来源类型：公司资产、授权素材、公开商用素材、临时参考。对未知来源图片给出风险提示，必要时禁止进入生产级生成。</p><p><b>生成结果风险：</b>生成后可以做相似度检测，和竞品 IP、内部禁用素材库、知名角色库做比对。如果相似度过高，标记为风险资产，只能作为内部参考，不能入库或商用。</p><p><b>过程追溯：</b>每个 AI 资产都保存模型版本、prompt、seed、参考图、生成时间、操作人、审核人、质检结果和最终用途。这样后续出现争议时能追溯来源。</p><p><b>权限控制：</b>不是所有人都能把 AI 结果标记为生产可用。概念参考、建模辅助、生产入库要分权限，生产入库必须经过美术负责人、TA 或版权流程审核。</p><p><b>输出标识：</b>对于外部交付或对外展示的内容，可以根据公司要求写入元数据、水印或生成记录，避免后续来源不清。</p><p>总结来说，合规不是一句“不要侵权”，而是数据来源管理、生成记录、相似度检测、人工审核和权限控制组成的完整机制。</p>`,t:`<p>这是 AI+TA 面试里的高风险题。回答时要表现出你知道生产资产最终可能进入商业产品，不能像个人玩工具一样随便用参考图。</p><p>重点说“可追溯”。有记录、有审核、有来源，才是公司能接受的生产流程。</p>`},
+{c:"case",n:20,s:5,q:"如果美术团队抗拒 AI+TA 工具，觉得它会替代人或增加流程负担，你怎么推动落地？",a:`<p>我会先承认这个担心是合理的。AI 工具如果设计不好，确实会变成新的审核负担，也会让美术担心自己的经验被弱化。所以推动落地不能靠强推，而要从真实痛点和小范围试点开始。</p><p><b>第一，选低风险、高痛点场景。</b> 不要一开始就说 AI 做角色终稿，这会引起抵触。可以先做批量命名、贴图检查、UV 检查、导出设置、材质引用丢失、LOD 缺失、返修说明生成这类低风险工具。它们不替代创作，但能减少重复劳动。</p><p><b>第二，让美术参与规则制定。</b> 工具里的标准不能由技术单方面写。TA 要和主美、组长、资深建模一起确定哪些规则是必须修，哪些只是建议。这样美术会觉得工具是在执行团队共识，而不是外部系统来挑毛病。</p><p><b>第三，输出要帮助修复，而不是只指出错误。</b> 如果工具只说“你错了”，一定会被讨厌。好的工具要告诉他错在哪里、为什么错、怎么修、能不能一键修、修完会不会影响效果。</p><p><b>第四，先做试点和标杆案例。</b> 找一两个愿意尝试的美术同学，用一个资产类型跑通流程，展示它如何减少返工、减少沟通、提高通过率。比起宣讲 AI 很强，真实案例更能说服团队。</p><p><b>第五，保留人工主导权。</b> AI 的定位是助手，不是裁判。最终风格判断、生产入库、角色质量还是由美术负责人和 TA 决定。工具可以提供建议和报告，但不能让美术觉得自己被黑箱系统否定。</p><p><b>第六，持续收集反馈。</b> 工具里要有误报、忽略、建议不清楚、规则不适用等反馈入口。每周或每个版本迭代一次，让团队看到自己的反馈真的被采纳。</p><p>我的推动策略是：先从减少重复劳动开始，建立信任，再逐步扩展到 AI 生成、风格检查和生产辅助。AI+TA 要让美术感觉“这是帮我省时间的工具”，而不是“这是监督我的系统”。</p>`,t:`<p>这题考察沟通和落地能力。AI+TA 不是纯技术岗位，很多时候要处理团队协作、流程改变和心理预期。</p><p>最好的回答不是“培训大家使用 AI”，而是从低风险痛点切入，用结果建立信任。</p>`},
+{c:"agent",n:21,s:5,q:"写 Skill 的时候，怎么样衡量一个 Skill 的好坏？",a:`<p>我衡量一个 Skill 好不好，不是看它写得长不长，而是看它能不能让 Agent <b>稳定、可复现、低歧义地完成一类任务</b>。我一般会从七个维度判断。</p><p><b>第一，触发边界是否清楚。</b> 一个好的 Skill 要写明什么时候使用、什么时候不要使用。比如“用户要求从对话中提炼长期记忆时使用”，同时也要说明“普通摘要、一次性任务状态不要沉淀为长期记忆”。如果触发边界模糊，Agent 就容易乱用。</p><p><b>第二，流程是否可执行。</b> Skill 不能只写原则，比如“保证质量”“注意安全”。它要写成具体步骤：先读取什么、再检查什么、调用什么工具、输出什么格式、最后怎么验证。Agent 最怕抽象口号，最好的是清晰的操作轨道。</p><p><b>第三，输入输出是否结构化。</b> 好的 Skill 会规定输入需要哪些字段，输出应该是什么结构。比如记忆提炼输出 memory candidates，资产质检输出 blocker、warning、info，代码审查输出文件、行号、影响和建议。结构化输出方便后续系统接管。</p><p><b>第四，判断标准是否明确。</b> 如果任务里有主观判断，Skill 要提供 rubric。比如“什么值得记忆”“什么算阻塞问题”“什么情况需要人工确认”。没有判断标准，模型每次执行都会飘。</p><p><b>第五，是否有安全和权限边界。</b> Skill 要说明哪些事不能做，比如不能保存敏感信息，不能直接修改源资产，不能执行破坏性命令，不能把无来源的 AI 资产标为生产可用。生产环境里，边界比能力更重要。</p><p><b>第六，是否可验证。</b> 一个好 Skill 应该告诉 Agent 完成后怎么检查结果。比如生成文档要渲染检查，改代码要跑测试，资产检查要引用规则 ID，记忆写入前要去重和安全过滤。</p><p><b>第七，是否能沉淀经验而不是堆 prompt。</b> Skill 应该把团队里的专家经验沉淀成稳定流程。比如 TA 的资产检查经验、主美的风格审核维度、工程里的排错路径。如果 Skill 只是把用户需求换一种说法，那价值不高。</p><p>所以我会总结：好的 Skill 应该具备清晰触发、可执行流程、结构化输出、明确标准、安全边界、验证机制和可迭代性。它的效果体现在 Agent 执行同类任务时更稳定、更少问错、更少漏步骤。</p>`,t:`<p>这题是 Agent 工程里的核心题。面试官想知道你是不是会把经验写成可复用能力，而不是只会写一段 prompt。</p><p>回答时要抓住“稳定性”和“可验证”。Skill 的本质不是让模型更聪明，而是降低任务执行的不确定性。</p>`},
+{c:"agent",n:22,s:5,q:"用 skill-creator 生成 Skill 后，你自己一般会调整哪些内容？",a:`<p>我会把 skill-creator 生成的版本当成初稿，它能帮我搭结构，但我一定会根据真实任务再做人工收敛。一般会重点调整八类内容。</p><p><b>第一，调整触发描述。</b> 自动生成的 Skill 有时 description 太宽，比如“用于处理资产问题”。我会改得更精确：用于检查游戏美术资产的命名、面数、UV、材质、贴图、LOD、引擎导入问题。触发越准，误用越少。</p><p><b>第二，补充不要使用的场景。</b> 很多 Skill 只写 when to use，但没写 when not to use。我会补上边界，比如“仅做概念讨论时不要跑完整质检”“用户只是要普通总结时不要写长期记忆”。这能避免 Agent 过度执行。</p><p><b>第三，把抽象流程改成具体步骤。</b> 如果里面写“分析资产并给出建议”，我会拆成：读取 metadata、查询项目规范、执行硬规则检查、检索历史返修、分级输出、生成修复建议、等待确认后再修复。</p><p><b>第四，补充判断 rubric。</b> 对需要模型判断的地方，我会加入评分或决策表。比如记忆提炼要看未来可用性、稳定性、安全性；资产问题要区分 blocker、warning、info；AI 生成资产要区分概念参考级、建模辅助级、生产可用级。</p><p><b>第五，固定输出格式。</b> 我会要求输出 JSON、Markdown 表格或固定字段，避免每次格式不同。比如资产质检必须输出 issue_id、severity、asset_path、current_value、expected_value、rule_source、fix_suggestion。</p><p><b>第六，补安全限制。</b> 自动生成的 Skill 往往安全边界不够细。我会明确禁止保存密钥、隐私信息；禁止直接覆盖源文件；禁止把未授权参考图生成的资产标为生产可用；高风险操作必须让用户确认。</p><p><b>第七，补工具调用策略。</b> 我会写清楚什么时候用 MCP，什么时候查知识库，什么时候调用 DCC 插件，什么时候只给建议。这样 Agent 不会一上来就乱调工具。</p><p><b>第八，补验证和失败处理。</b> 比如检查失败怎么办，工具不可用怎么办，知识库没有命中怎么办，AI 不确定时怎么回答。我通常会要求：没有依据就说不确定，需要人工确认，而不是编一个结论。</p><p>所以我的做法是：skill-creator 负责生成骨架，我负责把它从“通用说明”改成“可在生产环境稳定执行的操作规程”。</p>`,t:`<p>这题考察你是否真的用过 Skill，而不是只知道概念。</p><p>重点是“生成后一定要收敛”。自动生成的 Skill 常常宽泛，人工调整的价值在于补边界、补标准、补输出格式、补安全和验证。</p>`},
+{c:"agent",n:23,s:5,q:"用 Codex、Cursor 等 AI 工具写代码时，一个地方一直改一直报错，你会怎么解决？",a:`<p>如果一个地方一直改一直报错，我不会继续让 AI 在同一个点上反复猜。这个时候要先停下来，把问题从“继续修改”切换成“重新定位”。我一般会按这个流程处理。</p><p><b>第一，冻结现场，先看清错误。</b> 我会保留当前改动，不急着继续生成代码，先读完整报错、堆栈、失败测试和相关日志。很多时候 AI 连续改错，是因为它只看到了表层错误，没有看到真正根因。</p><p><b>第二，缩小复现范围。</b> 如果是测试失败，我会只跑相关单测；如果是页面问题，我会找到最小页面或最小交互；如果是类型错误，我会只编译相关模块。目标是把问题缩小到一个最小可复现案例，而不是让 AI 在整个项目里乱改。</p><p><b>第三，回到上下文，重新读代码。</b> 我会重新看相关文件、调用链、类型定义、接口协议、历史实现和相邻模块。AI 工具常见问题是“局部修补”，但真正错误可能来自上游数据结构、旧接口约定或某个隐藏副作用。</p><p><b>第四，区分是实现错、理解错，还是方向错。</b> 如果实现错，就修具体代码；如果理解错，就重新给 AI 更准确的上下文；如果方向错，就要回滚自己这部分尝试，换方案。不要在错误方向上越修越大。</p><p><b>第五，要求 AI 先解释再修改。</b> 我会让 AI 先回答：错误发生在哪一行、为什么发生、它假设了什么、最小修复是什么、会影响哪些地方。只有解释成立，再让它改代码。这样可以避免它边猜边改。</p><p><b>第六，小步修改，小步验证。</b> 每次只改一个假设点，改完马上跑对应测试或类型检查。不要一次让 AI 改十个文件，因为那样失败后很难知道是哪一步引入了新问题。</p><p><b>第七，必要时换工具或换视角。</b> Cursor/Codex 卡住时，我会自己手动画调用链，或者让另一个模型做 code review，甚至临时写一个断言、日志或调试脚本验证假设。有时候不是模型能力问题，而是上下文已经被错误尝试污染了。</p><p><b>第八，保护已有正确代码。</b> 我不会为了让测试过而大范围重构，也不会删除用户已有改动。必要时只回退我刚才引入的最小改动，保留其他人的代码。</p><p>总结一下：AI 写代码卡住时，最重要的是停止盲改，回到错误证据和最小复现；先定位根因，再小步修复，再用测试验证。AI 是加速器，但排障时仍然要按工程方法来。</p>`,t:`<p>这题非常像真实工作面试。面试官想看你会不会被 AI 带着乱改。</p><p>好的答案要体现三个能力：读错误、缩小范围、验证假设。也可以补一句：当 AI 连续失败两三次，就要换成调试模式，而不是继续生成更多代码。</p>`},
+{c:"agent",n:24,s:5,q:"Agent 任务是怎么拆分的？拆分粒度是怎么决定的？",a:`<p>我会把 Agent 任务拆分理解成两件事：<b>先拆目标，再拆执行单元</b>。不是把任务机械切成很多小块，而是根据任务依赖、风险、工具边界和可验证性来拆。</p><p><b>第一，先识别最终目标和交付物。</b> 比如用户说“做一个 AI+TA 资产质检工具”，最终交付物可能不是一句方案，而是插件入口、后端检查服务、规则库、AI 解释模块、质检报告和数据闭环。先明确交付物，才知道要拆哪些子任务。</p><p><b>第二，按阶段拆。</b> 常见拆法是：需求理解、信息收集、方案设计、实现、验证、总结。比如代码任务会拆成读代码、定位相关模块、制定修改方案、改代码、跑测试、修失败、交付说明。AI+TA 任务会拆成接入点、资产检查规则、AI 能力、知识库、质检报告、引擎验证。</p><p><b>第三，按专业边界拆。</b> 如果任务涉及不同专业能力，就应该拆开。比如 AI+TA 里，风格一致性、3D 拓扑检查、Maya 插件、Unreal 导入验证、知识库检索是不同能力域。拆开后每个子任务可以用不同工具、不同上下文和不同验证方式。</p><p><b>第四，按依赖关系拆。</b> 有些任务必须先做前置判断。比如没有项目规范，就不能判断资产是否合格；没有读取报错，就不能修 bug；没有明确模型输出格式，就不能接 API。所以拆分时要先做会影响后续方向的节点。</p><p><b>第五，按风险和可回滚性拆。</b> 高风险任务要拆得更细，比如改数据库、批量修改资产、执行自动修复脚本。低风险任务可以拆得粗一点，比如生成说明文档或整理面试题。</p><p><b>第六，按可验证性决定粒度。</b> 一个好的子任务应该有明确完成标准。比如“检查贴图尺寸是否超过 2048”很好验证；“优化资产质量”太泛。粒度过大，Agent 容易跑偏；粒度过小，会增加编排成本和上下文切换。</p><p>我的经验是：拆分粒度以“一个子任务能独立执行、能独立验证、失败后能明确定位”为标准。复杂任务先粗拆成阶段，再对高风险或不确定环节细拆。</p>`,t:`<p>这题考察的是 Agent 编排能力。不要回答成“把大任务拆成小任务”这么泛。</p><p>加分点是说清粒度判断标准：依赖、风险、工具边界、上下文大小和验证方式。面试官会觉得你不是只会调模型，而是知道怎么组织 Agent 执行复杂任务。</p>`},
+{c:"agent",n:25,s:5,q:"你们 Agent 是单 Agent 还是多 Agent？为什么这么设计，有没有考虑另一种方案？",a:`<p>我会先说明：单 Agent 和多 Agent 没有绝对好坏，关键看任务复杂度、风险和协作成本。我的默认选择通常是<b>主 Agent 负责整体编排，必要时引入专门子 Agent 或专门工具</b>，而不是一上来就做很多 Agent。</p><p><b>单 Agent 的优点</b>是简单、上下文一致、决策链短、调试容易。比如普通代码修改、文档整理、资产质检报告生成，用单 Agent 就够了。它能完整理解用户目标，也不容易出现多个 Agent 互相误解。</p><p><b>单 Agent 的缺点</b>是复杂任务里容易上下文过载，也容易一个模型同时承担研究、实现、审查、验证多个角色，导致遗漏。比如 AI+TA 中台设计既有前端插件、后端服务、模型接入、知识库、合规和数据指标，如果全靠一个 Agent 一口气做，质量会不稳定。</p><p><b>多 Agent 的优点</b>是可以专业分工。比如一个 Agent 负责检索资料，一个负责写方案，一个负责代码实现，一个负责 review 和测试。复杂任务里，多 Agent 可以形成反馈循环，尤其是“实现 Agent + 审查 Agent”很有价值。</p><p><b>多 Agent 的缺点</b>是编排复杂、通信成本高、容易产生重复工作或结论冲突。如果没有清晰的任务边界和共享状态，多 Agent 反而会让系统更乱。</p><p>所以我的设计会是：默认单 Agent 执行，遇到以下情况再引入多 Agent：任务跨度很大、需要并行调研、需要独立审查、上下文超过主 Agent 承载能力、或者高风险任务需要第二视角验证。</p><p>如果面试官问有没有考虑另一种方案，我会说考虑过。纯单 Agent 方案更容易落地，适合 MVP；纯多 Agent 方案更适合大规模自动化，但前期成本高。比较稳妥的是<b>单 Agent 编排 + 专家子 Agent / 工具化能力</b>的混合架构。主 Agent 保持目标一致性，子 Agent 只处理边界清楚的任务，比如代码审查、资料检索、资产检查、测试验证。</p><p>一句话总结：我不会为了多 Agent 而多 Agent。能单 Agent 稳定完成的就保持简单；当任务复杂到需要专业分工、并行处理或独立验证时，再引入多 Agent。</p>`,t:`<p>这题考察架构取舍。回答时要避免站死“单 Agent 最好”或“多 Agent 最先进”。</p><p>成熟回答应该体现阶段性：MVP 先单 Agent，复杂生产系统再引入多 Agent，并且说明为什么、何时、怎么引入。</p>`},
+{c:"mem",n:26,s:5,q:"上下文窗口不够时，你优先保留哪些信息，为什么？",a:`<p>上下文窗口不够时，我的原则是：<b>优先保留会影响当前决策和后续执行正确性的内容</b>，而不是保留最早的、最长的或最完整的聊天记录。</p><p><b>第一优先级是系统指令和安全边界。</b> 这些决定 Agent 能做什么、不能做什么，比如不能泄露敏感信息、不能执行破坏性操作、要遵守工具权限。这类信息一旦丢失，风险最大。</p><p><b>第二优先级是用户当前目标和最新指令。</b> 最新需求永远比旧需求重要。比如用户一开始说做招聘 TA，后来纠正是 Technical Artist，那后续必须以技术美术为准。目标和最新约束丢了，Agent 就会答偏。</p><p><b>第三优先级是任务状态。</b> 包括已经做了什么、还剩什么、当前文件路径、已修改内容、待验证事项、失败原因。长任务中最怕重复做或覆盖错误，所以状态要保留。</p><p><b>第四优先级是关键事实和决策依据。</b> 比如项目使用什么技术栈、资产规范是什么、采用单 Agent 还是多 Agent、为什么选择某个方案。这些会影响后续判断。</p><p><b>第五优先级是工具结果和错误证据。</b> 比如测试输出、报错堆栈、质检报告、搜索结果。尤其是失败日志，比闲聊历史更重要，因为它直接指导下一步。</p><p><b>第六优先级是用户偏好和长期记忆。</b> 比如用户希望中文回答、面试题按点回答、答案要详细一些。这些影响体验，但如果和当前任务冲突，要以当前任务为准。</p><p>我会压缩或丢弃的内容包括：重复讨论、已完成且不再影响后续的中间过程、长篇原始聊天、低价值解释、过期假设和没有被验证的猜测。</p><p>如果还不够，我会做摘要压缩：保留目标、约束、决策、状态、证据和下一步，而不是逐字保留原文。比如把十轮讨论压成：“用户要 AI+TA 面试题库 HTML，风格参考 aigc-interview，已生成 23 题，现在继续追加 Agent 上下文问题。”</p>`,t:`<p>这题面试官想看你是否懂 Context Engineering。关键不是“压缩上下文”，而是知道什么信息对任务正确性最重要。</p><p>加分回答是给出优先级，并解释为什么最新指令、任务状态和错误证据比完整历史更重要。</p>`},
+{c:"mem",n:27,s:5,q:"上下文是怎么构建的？",a:`<p>我会把上下文构建看成一个动态过程：<b>根据当前任务，从多种信息源里选择最相关、最可靠、最能指导下一步的信息，组织成模型可用的输入</b>。</p><p><b>第一步，理解当前任务。</b> 先判断用户到底要什么，是问概念、要写代码、要改文件、要做面试记录，还是要调用工具。任务类型不同，上下文构建方式不同。比如代码任务要优先读仓库文件；面试问答要优先保留问题和回答风格；资产质检要优先查项目规范和资产 metadata。</p><p><b>第二步，确定上下文来源。</b> 常见来源包括系统指令、开发者约束、用户最新输入、当前会话历史、长期记忆、项目文件、知识库、MCP resources、工具结果、错误日志和外部文档。不是所有来源都要塞进去，而是按任务选择。</p><p><b>第三步，做检索和过滤。</b> 如果是知识库或历史记忆，我会根据当前问题生成 query，召回相关内容，再按用户、项目、权限、时间、置信度过滤。比如 AI+TA 资产检查只召回当前项目、当前资产类型、当前平台版本的规范。</p><p><b>第四步，做排序和压缩。</b> 上下文窗口有限，所以要排序：最新指令、目标、硬约束、关键证据、相关代码或规范优先。长文档要摘要，重复信息要合并，过期信息要剔除，不确定信息要标记为假设。</p><p><b>第五步，结构化组织。</b> 我不会把信息杂乱堆给模型，而是按结构放：任务目标、已知事实、约束、相关资料、工具结果、待解决问题、输出要求。结构越清楚，模型越不容易漏步骤。</p><pre>上下文构建示例：
+1. 当前目标：追加 4 道 Agent 面试题到 HTML
+2. 用户约束：中文、答案详细、保持原页面形式
+3. 文件状态：ai-ta-interview-record.html 已有 23 题
+4. 需要修改：总数改 27，数组追加 n24-n27
+5. 验证方式：检查题目数量和页面总数</pre><p><b>第六步，执行后回写状态。</b> 工具结果、修改过的文件、失败原因、完成事项，要进入短期任务状态。长期有价值的信息再经过记忆筛选进入知识库。</p><p>所以我理解的上下文构建不是简单拼 prompt，而是一个“任务理解 → 信息召回 → 过滤排序 → 压缩组织 → 执行回写”的循环。它的目标是让模型在有限窗口里看到最该看的信息。</p>`,t:`<p>这题和“上下文窗口不够保留什么”是一组。前者问取舍，后者问构建流程。</p><p>回答时最好说出上下文来源和组织结构。面试官会听你是否知道 RAG、记忆、工具结果、文件内容、系统约束这些信息如何组合，而不是只说“把相关信息放进去”。</p>`}
+];
+const labels={mem:"记忆管理",agent:"Skill / MCP",ta:"AI+TA",case:"实战问答"};
+function stars(n){return "★".repeat(n)}
+function tagClass(c){return "tag "+c}
+function render(){
+  const cat=document.querySelector(".tabs button.active").dataset.cat;
+  const kw=document.getElementById("search").value.trim().toLowerCase();
+  let items=cat==="all"?D:D.filter(x=>x.c===cat);
+  if(kw)items=items.filter(x=>(x.q+x.a+x.t).toLowerCase().includes(kw));
+  document.getElementById("info").textContent=kw?`找到 ${items.length} 个结果`:`共 ${items.length} 题`;
+  window.filtered=items;
+  document.getElementById("list").innerHTML=items.map((d,i)=>`<div class="card" onclick="openModal(${i})"><div class="row"><div class="num">${d.n}</div><h3>${d.q}</h3><div class="stars">${stars(d.s)}</div><div class="arrow">›</div></div></div>`).join("")||"<p style='text-align:center;color:var(--dim);padding:60px 0'>没有匹配的题目</p>";
+}
+function openModal(i){
+  const d=window.filtered[i];
+  document.getElementById("modalQ").textContent=d.q;
+  const tag=document.getElementById("modalTag");
+  tag.className=tagClass(d.c);
+  tag.textContent=labels[d.c]+" "+stars(d.s);
+  document.getElementById("modalA").innerHTML=d.a;
+  document.getElementById("modalT").innerHTML=d.t;
+  document.getElementById("modal").classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function closeModal(){document.getElementById("modal").classList.remove("open");document.body.style.overflow=""}
+document.getElementById("search").addEventListener("input",render);
+document.querySelectorAll(".tabs button").forEach(btn=>btn.addEventListener("click",function(){document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));this.classList.add("active");render()}));
+document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+render();
+</script>
+</body>
+</html>
